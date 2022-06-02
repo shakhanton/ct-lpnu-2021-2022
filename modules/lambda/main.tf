@@ -36,7 +36,7 @@ module "lambda_function_get_all_authors" {
   runtime                           = "nodejs12.x"
   create_role                       = false
   lambda_role                       = var.get_all_authors_role_arn
-  use_existing_cloudwatch_log_group = false
+  use_existing_cloudwatch_log_group = true
   cloudwatch_logs_retention_in_days = 3
 
   source_path = "${path.module}/lambda_source/get_all_authors/index.js"
@@ -45,7 +45,8 @@ module "lambda_function_get_all_authors" {
     TABLE_NAME = var.dynamo_db_authors_name
   }
 
-  tags = module.label.tags
+  tags       = module.label.tags
+  depends_on = [aws_cloudwatch_log_group.get_all_authors]
 }
 
 module "lambda_function_get_all_courses" {
@@ -59,7 +60,7 @@ module "lambda_function_get_all_courses" {
   runtime                           = "nodejs12.x"
   create_role                       = false
   lambda_role                       = var.get_all_courses_role_arn
-  use_existing_cloudwatch_log_group = false
+  use_existing_cloudwatch_log_group = true
   cloudwatch_logs_retention_in_days = 3
 
 
@@ -69,7 +70,9 @@ module "lambda_function_get_all_courses" {
     TABLE_NAME = var.dynamo_db_courses_name
   }
 
-  tags = module.label.tags
+  tags       = module.label.tags
+  depends_on = [aws_cloudwatch_log_group.get_all_courses]
+
 }
 
 resource "aws_cloudwatch_log_group" "get_all_authors" {
