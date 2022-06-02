@@ -9,13 +9,16 @@ module "iam" {
 }
 
 module "lambda" {
-  source                   = "./modules/lambda"
-  context                  = module.base_labels.context
-  name                     = "lambda"
-  dynamo_db_authors_name   = module.authors.id
-  dynamo_db_courses_name   = module.course.id
-  get_all_authors_role_arn = module.iam.get_all_authors_role_arn
-  get_all_courses_role_arn = module.iam.get_all_courses_role_arn
+  source                                       = "./modules/lambda"
+  context                                      = module.base_labels.context
+  name                                         = "lambda"
+  dynamo_db_authors_name                       = module.authors.id
+  dynamo_db_courses_name                       = module.course.id
+  get_all_authors_role_arn                     = module.iam.get_all_authors_role_arn
+  get_all_courses_role_arn                     = module.iam.get_all_courses_role_arn
+  aws_lambda_permission_api_gateway_source_arn = aws_api_gateway_rest_api.this.execution_arn
+  aws_api_gateway_resource_authors_id          = aws_api_gateway_resource.authors.id
+  aws_api_gateway_resource_authors_path        = aws_api_gateway_resource.authors.path
 }
 
 module "frontend" {
