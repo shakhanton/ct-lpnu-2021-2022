@@ -1,3 +1,23 @@
+// const AWS = require("aws-sdk");
+// const dynamodb = new AWS.DynamoDB({
+//   region: process.env.AWS_REGION,
+//   apiVersion: "2012-08-10"
+// });
+
+// exports.handler = (event, context, callback) => {
+//   const params = {
+//     TableName: process.env.TABLE_NAME
+//   };
+//   dynamodb.scan(params, (err, data) => {
+//     if (err) {
+//       console.log(err);
+//       callback(err);
+//     } else {
+//       callback(null, data);
+//     }
+//   });
+// };
+
 const AWS = require("aws-sdk");
 const dynamodb = new AWS.DynamoDB({
   region: process.env.AWS_REGION,
@@ -8,13 +28,15 @@ exports.handler = (event, context, callback) => {
   const params = {
     TableName: process.env.TABLE_NAME
   };
-  dynamodb.scan(params, (err, data) => {
+  dynamodb.scan(params, (err, authors) => {
     if (err) {
       console.log(err);
       callback(err);
     } else {
-      callback(null, data);
+      callback(null, authors);
+      // callback(null, {
+        // body: JSON.stringify(authors)
+      // });
     }
   });
 };
-
